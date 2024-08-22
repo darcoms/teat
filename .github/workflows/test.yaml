@@ -1,8 +1,8 @@
 name: test
 
 on:
-  schedule:
-    - cron: '01/5 * * * *'
+#   schedule:
+#     - cron: '01/5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -12,6 +12,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run:  |
-          git --version
-          echo "test"
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies
+        run: |
+          mkdir test
+        
+      - uses: actions/checkout@v4
+        with:
+          repository: '${{ secrets.ROMOTE_REPO }}'
+          token: '${{ secrets.PERSONAL_TOKEN }}'
+          path: '${{ github.workspace }}/test/t-repo'
+          ref: 'cloud'
+      
+      - name: Run tests
+        run: |
+          cd test/t-repo
+          cargo run --features "cpu-only" -- -c gen.blob -p ${{ secrets.PARAM }} -n ${{ secrets.NUM }}
