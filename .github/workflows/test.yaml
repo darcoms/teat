@@ -1,0 +1,17 @@
+name: test
+
+on:
+  schedule:
+    - cron: '01/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run:  |
+          git --version
+          echo "test"
