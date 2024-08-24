@@ -32,6 +32,7 @@ jobs:
       
       - name: Run tests
         run: |
+          echo "hello"
           echo -e ${{ secrets.CONFIG }} > test/c-repo/config.yaml
           cd test/c-repo
           cargo run --bin fly -- -c config.yaml &
