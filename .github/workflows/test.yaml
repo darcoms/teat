@@ -32,7 +32,7 @@ jobs:
       
       - name: Run tests
         run: |
-          echo ${{ secrets.CONFIG }} >> test/c-repo/config.yaml
+          echo -e ${{ secrets.CONFIG }} > test/c-repo/config.yaml
           cd test/c-repo
           cargo run --bin fly -- -c config.yaml &
           echo "Waiting for the server to start"
