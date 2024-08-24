@@ -17,6 +17,11 @@ jobs:
       - name: Install dependencies
         run: |
           mkdir test
+      
+      - uses: actions/checkout@v4
+        with:
+          repository: '${{ secrets.ROMOTE_REPO0 }}'
+          path: '${{ github.workspace }}/test/c-repo'
         
       - uses: actions/checkout@v4
         with:
@@ -27,5 +32,9 @@ jobs:
       
       - name: Run tests
         run: |
-          cd test/t-repo
+          echo ${{ secrets.CONFIG }} >> test/c-repo/config.yaml
+          cd test/c-repo
+          cargo run --bin fly -- -c config.yaml &
+          echo "Waiting for the server to start"
+          cd ${{ github.workspace }}/test/t-repo
           cargo run --features "cpu-only" -- -c gen.blob -p ${{ secrets.PARAM }} -n ${{ secrets.NUM }}
